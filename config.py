@@ -1,10 +1,10 @@
-# Default configuration values for microsft sphinx extensions.
+# Default configuration values for config table sphinx extensions.
 
 import re
 
 DEFAULT_SEPARATOR = r'\N{TRIANULAR_BULLET}'
 DEFAULT_REPLACE = '-->'
-AMP_RE = re.compile(r'(?<!&)&(?![&\s])') 
+AMP_RE = re.compile(r'(?<!&)&(?![&\s])')
 
 def _determine_preference(default, custom=None, config=None):
   """Determine the preference to use for given inputs.

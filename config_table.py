@@ -1,4 +1,4 @@
-# Base ms table template. Abstract classes. Do not use directly.
+# Base config table template. Abstract classes. Do not use directly.
 
 import inspect
 from . import config
@@ -7,12 +7,12 @@ from docutils import nodes
 from docutils.parsers.rst.directives.tables import Table
 
 
-class MsTableData(object):
+class ConfigTableData(object):
   """Structure to hold MS table data and provide convience methods.
 
   Attributes:
     LENGTH_MISMATCH: String detailed explanation of data mismatch.
-    key: String whitespace striped main registry key.
+    key: String whitespace striped main key.
     data: List of Lists containing string data to display in table. Order is
         preserved. Minimum one list.
     title: nodes.title object containing parsed directive arguments as title.
@@ -20,8 +20,8 @@ class MsTableData(object):
     use_gui_key: Boolean True to render table key as a menuselection role.
     key_mod: String title modifier for GUI key display.
   """
-  LENGTH_MISMATCH = ('Abstract MsTableData length mismatch error. You should '
-                     'not see this.')
+  LENGTH_MISMATCH = ('Abstract ConfigTableData length mismatch error. You '
+                     'should not see this.')
 
   def __init__(self,
                key=None,
@@ -30,10 +30,10 @@ class MsTableData(object):
                cols=3,
                gui=False,
                key_mod=None):
-    """Initialize regedit data structure with data or defaults.
+    """Initialize config table data structure with data or defaults.
 
     Args:
-      key: String directive option regedit key. Default: None.
+      key: String directive option key. Default: None.
       data: List of Lists containing string data to display in table.
           Order is preserved. Minimum one list.
       title: nodes.title object. Default: nodes.title().
@@ -69,15 +69,15 @@ class MsTableData(object):
     return zip(*self.data)
 
 
-class MsTable(Table):
+class ConfigTable(Table):
 
   def run(self):
-    """Run the MS Table generation directive.
+    """Run the config table generation directive.
 
     Determine the calling class name and label directive accordingly.
 
     Returns:
-      List containing Ms Table Directive.
+      List containing config table directive.
     """
     caller_name = inspect.currentframe().f_locals['self'].__class__.__name__
     directive = []

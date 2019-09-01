@@ -12,20 +12,20 @@
 #    See TaskScheduler class docstring for additional options.
 #
 #    conf.py options:
-#      ms_tschedule_separator: Unicode separator to use for GUI menuselection.
+#      ct_tschedule_separator: Unicode separator to use for GUI menuselection.
 #          This uses the Unicode Character Name resolve a glyph.
 #          Default: '\N{TRIANGULAR BULLET}'.
 #          Suggestions: http://xahlee.info/comp/unicode_arrows.html
-#          Setting this over-rides ms_separator value for task scheduler
+#          Setting this over-rides ct_separator value for task scheduler
 #          display.
-#      ms_tschedule_separator_replace: String separator to replace with Unicode
+#      ct_tschedule_separator_replace: String separator to replace with Unicode
 #          separator. Default: '-->'.
-#      ms_tschedule_admin: String 'requires admin' modifier for GUI
+#      ct_tschedule_admin: String 'requires admin' modifier for GUI
 #          menuselection. Default: ' (as admin)'.
-#      ms_tschedule_content: String default GUI menuselection for opening group
+#      ct_tschedule_content: String default GUI menuselection for opening group
 #          policy.
 #          Default: 'start --> Task Scheduler --> Task Scheduler Library'.
-#      ms_tschedule_key_gui: Boolean True to enable GUI menuselection display of
+#      ct_tschedule_key_gui: Boolean True to enable GUI menuselection display of
 #          task scheduler key. Default: True.
 #
 #    Directive Options:
@@ -57,35 +57,35 @@
 #   :no_section:
 #   :hide_gui:
 
-from . import config
-from . import ms_table
+from .. import config
+from .. import config_table
 from docutils import nodes
 from docutils.parsers.rst import directives
 from docutils.parsers.rst.directives.tables import Table
 
 
-class TaskSchedulerData(ms_table.MsTableData):
+class TaskSchedulerData(config_table.ConfigTableData):
   """Structure to hold task scheduler data and provide convience methods."""
   LENGTH_MISMATCH = ('Mis-matched sets of task scheduler key data: names and '
                      'data must all contain same number of elements.')
 
 
-class TaskScheduler(ms_table.MsTable):
+class TaskScheduler(config_table.ConfigTable):
   """Generate task scheduler elements in a sphinx document.
 
   conf.py options:
-    ms_tschedule_separator: Unicode separator to use for GUI menuselection.
+    ct_tschedule_separator: Unicode separator to use for GUI menuselection.
         This uses the Unicode Character Name resolve a glyph.
         Default: '\N{TRIANGULAR BULLET}'.
         Suggestions: http://xahlee.info/comp/unicode_arrows.html
-        Setting this over-rides ms_separator value for task scheduler display.
-    ms_tschedule_separator_replace: String separator to replace with Unicode
+        Setting this over-rides ct_separator value for task scheduler display.
+    ct_tschedule_separator_replace: String separator to replace with Unicode
         separator. Default: '-->'.
-    ms_tschedule_admin: String 'requires admin' modifier for GUI menuselection.
+    ct_tschedule_admin: String 'requires admin' modifier for GUI menuselection.
         Default: ' (as admin)'.
-    ms_tschedule_content: String default GUI menuselection for opening group
+    ct_tschedule_content: String default GUI menuselection for opening group
         policy. Default: 'start --> Task Scheduler --> Task Scheduler Library'.
-    ms_tschedule_key_gui: Boolean True to enable GUI menuselection display of
+    ct_tschedule_key_gui: Boolean True to enable GUI menuselection display of
         task scheduler key. Default: True.
 
   Directive Options:
@@ -122,18 +122,18 @@ class TaskScheduler(ms_table.MsTable):
     """Initalize base Table class and generate separators."""
     super().__init__(*args, **kwargs)
     self.sep = config.get_sep(
-      self.state.document.settings.env.config.ms_tschedule_separator,
-      self.state.document.settings.env.config.ms_separator)
+      self.state.document.settings.env.config.ct_tschedule_separator,
+      self.state.document.settings.env.config.ct_separator)
     self.rep = config.get_rep(
-      self.state.document.settings.env.config.ms_tschedule_separator_replace,
-      self.state.document.settings.env.config.ms_separator_replace)
+      self.state.document.settings.env.config.ct_tschedule_separator_replace,
+      self.state.document.settings.env.config.ct_separator_replace)
 
     self.text_content = (
-        self.state.document.settings.env.config.ms_tschedule_content)
-    self.key_gui = self.state.document.settings.env.config.ms_tschedule_key_gui
+        self.state.document.settings.env.config.ct_tschedule_content)
+    self.key_gui = self.state.document.settings.env.config.ct_tschedule_key_gui
 
     if 'admin' in self.options:
-      self.key_mod = self.state.document.settings.env.config.ms_tschedule_admin
+      self.key_mod = self.state.document.settings.env.config.ct_tschedule_admin
     else:
       self.key_mod = ''
 
@@ -162,10 +162,10 @@ class TaskScheduler(ms_table.MsTable):
 
 
 def setup(app):
-  app.add_config_value('ms_tschedule_admin', ' (as admin)', '')
-  app.add_config_value('ms_tschedule_content', 'start --> task scheduler --> task scheduler library', '')
-  app.add_config_value('ms_tschedule_key_gui', True, '')
-  app.add_config_value('ms_tschedule_separator', config.DEFAULT_SEPARATOR, '')
-  app.add_config_value('ms_tschedule_separator_replace', config.DEFAULT_REPLACE, '')
+  app.add_config_value('ct_tschedule_admin', ' (as admin)', '')
+  app.add_config_value('ct_tschedule_content', 'start --> task scheduler --> task scheduler library', '')
+  app.add_config_value('ct_tschedule_key_gui', True, '')
+  app.add_config_value('ct_tschedule_separator', config.DEFAULT_SEPARATOR, '')
+  app.add_config_value('ct_tschedule_separator_replace', config.DEFAULT_REPLACE, '')
 
   app.add_directive('tschedule', TaskScheduler)

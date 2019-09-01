@@ -14,17 +14,17 @@
 #    See RegEdit class docstring for additional options.
 #
 #    conf.py options:
-#      ms_regedit_separator: Unicode separator to use for GUI menuselection.
+#      ct_regedit_separator: Unicode separator to use for GUI menuselection.
 #          This uses the Unicode Character Name resolve a glyph.
 #          Default: '\N{TRIANGULAR BULLET}'.
 #          Suggestions: http://xahlee.info/comp/unicode_arrows.html
-#      ms_regedit_separator_replace: String separator to replace with Unicode
+#      ct_regedit_separator_replace: String separator to replace with Unicode
 #          separator. Default: '-->'.
-#      ms_regedit_admin: String 'requires admin' modifier for GUI menuselection.
+#      ct_regedit_admin: String 'requires admin' modifier for GUI menuselection.
 #          Default: ' (as admin)'.
-#      ms_regedit_content: String default GUI menuselection for opening regedit.
+#      ct_regedit_content: String default GUI menuselection for opening regedit.
 #          Default: 'start --> regedit'.
-#      ms_regedit_key_gui: Boolean True to display regedit key as a GUI
+#      ct_regedit_key_gui: Boolean True to display regedit key as a GUI
 #          menuselection, otherwise plain text. Default: True.
 #
 #    Directive Options:
@@ -39,34 +39,34 @@
 #      show_title: Flag show regedit table caption (caption is arguments title).
 #      hide_gui: Flag hide GUI menuselection. This also disables :admin:.
 
-from . import config
-from . import ms_table
+from .. import config
+from .. import config_table
 from docutils import nodes
 from docutils.parsers.rst import directives
 from docutils.parsers.rst.directives.tables import Table
 
 
-class RegEditData(ms_table.MsTableData):
+class RegEditData(config_table.ConfigTableData):
   """Structure to hold regedit data and provide convience methods.  """
   LENGTH_MISMATCH = ('Mis-matched sets of registry key data: names, types, and '
                      'data must all contain same number of elements.')
 
 
-class RegEdit(ms_table.MsTable):
+class RegEdit(config_table.ConfigTable):
   """Generate RegEdit elements in a sphinx document.
 
   conf.py options:
-    ms_regedit_separator: Unicode separator to use for GUI menuselection. This
+    ct_regedit_separator: Unicode separator to use for GUI menuselection. This
         uses the Unicode Character Name resolve a glyph.
         Default: '\N{TRIANGULAR BULLET}'.
         Suggestions: http://xahlee.info/comp/unicode_arrows.html
-    ms_regedit_separator_replace: String separator to replace with Unicode
+    ct_regedit_separator_replace: String separator to replace with Unicode
         separator. Default: '-->'.
-    ms_regedit_admin: String 'requires admin' modifier for GUI menuselection.
+    ct_regedit_admin: String 'requires admin' modifier for GUI menuselection.
         Default: ' (as admin)'.
-    ms_regedit_content: String default GUI menuselection for opening regedit.
+    ct_regedit_content: String default GUI menuselection for opening regedit.
         Default: 'start --> regedit'.
-    ms_regedit_key_gui: Boolean True to display regedit key as a GUI
+    ct_regedit_key_gui: Boolean True to display regedit key as a GUI
         menuselection, otherwise plain text. Default: True.
 
   Directive Options:
@@ -101,16 +101,16 @@ class RegEdit(ms_table.MsTable):
     """Initalize base Table class and generate separators."""
     super().__init__(*args, **kwargs)
     self.sep = config.get_sep(
-      self.state.document.settings.env.config.ms_regedit_separator,
-      self.state.document.settings.env.config.ms_separator)
+      self.state.document.settings.env.config.ct_regedit_separator,
+      self.state.document.settings.env.config.ct_separator)
     self.rep = config.get_rep(
-      self.state.document.settings.env.config.ms_regedit_separator_replace,
-      self.state.document.settings.env.config.ms_separator_replace)
-    self.text_content = self.state.document.settings.env.config.ms_regedit_content
-    self.key_gui = self.state.document.settings.env.config.ms_regedit_key_gui
+      self.state.document.settings.env.config.ct_regedit_separator_replace,
+      self.state.document.settings.env.config.ct_separator_replace)
+    self.text_content = self.state.document.settings.env.config.ct_regedit_content
+    self.key_gui = self.state.document.settings.env.config.ct_regedit_key_gui
 
     if 'admin' in self.options:
-      self.key_mod = self.state.document.settings.env.config.ms_regedit_admin
+      self.key_mod = self.state.document.settings.env.config.ct_regedit_admin
     else:
       self.key_mod = ''
 
@@ -140,10 +140,10 @@ class RegEdit(ms_table.MsTable):
 
 
 def setup(app):
-  app.add_config_value('ms_regedit_admin', ' (as admin)', '')
-  app.add_config_value('ms_regedit_content', 'start --> regedit', '')
-  app.add_config_value('ms_regedit_key_gui', True, '')
-  app.add_config_value('ms_regedit_separator', config.DEFAULT_SEPARATOR, '')
-  app.add_config_value('ms_regedit_separator_replace', config.DEFAULT_REPLACE, '')
+  app.add_config_value('ct_regedit_admin', ' (as admin)', '')
+  app.add_config_value('ct_regedit_content', 'start --> regedit', '')
+  app.add_config_value('ct_regedit_key_gui', True, '')
+  app.add_config_value('ct_regedit_separator', config.DEFAULT_SEPARATOR, '')
+  app.add_config_value('ct_regedit_separator_replace', config.DEFAULT_REPLACE, '')
 
   app.add_directive('regedit', RegEdit)

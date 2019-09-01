@@ -12,18 +12,18 @@
 #    See Firewall class docstring for additional options.
 #
 #    conf.py options:
-#      ms_firewall_separator: Unicode separator to use for GUI menuselection.
+#      ct_firewall_separator: Unicode separator to use for GUI menuselection.
 #          This uses the Unicode Character Name resolve a glyph.
 #          Default: '\N{TRIANGULAR BULLET}'.
 #          Suggestions: http://xahlee.info/comp/unicode_arrows.html
-#          Setting this over-rides ms_separator value for firewall display.
-#      ms_firewall_separator_replace: String separator to replace with Unicode
+#          Setting this over-rides ct_separator value for firewall display.
+#      ct_firewall_separator_replace: String separator to replace with Unicode
 #          separator. Default: '-->'.
-#      ms_firewall_admin: String 'requires admin' modifier for GUI menuselection.
+#      ct_firewall_admin: String 'requires admin' modifier for GUI menuselection.
 #          Default: ' (as admin)'.
-#      ms_firewall_content: String default GUI menuselection for opening group
+#      ct_firewall_content: String default GUI menuselection for opening group
 #          policy. Default: 'start --> gpedit.msc'.
-#      ms_firewall_key_gui: Boolean True to enable GUI menuselection display of
+#      ct_firewall_key_gui: Boolean True to enable GUI menuselection display of
 #          firewall key. Default: True.
 #
 #    Directive Options:
@@ -55,34 +55,34 @@
 #   :no_section:
 #   :hide_gui:
 
-from . import config
-from . import ms_table
+from .. import config
+from .. import config_table
 from docutils import nodes
 from docutils.parsers.rst import directives
 from docutils.parsers.rst.directives.tables import Table
 
-class FirewallData(ms_table.MsTableData):
+class FirewallData(config_table.ConfigTableData):
   """Structure to hold firewall data and provide convience methods."""
   LENGTH_MISMATCH = ('Mis-matched sets of firewall key data: names and '
                      'data must all contain same number of elements.')
 
 
-class Firewall(ms_table.MsTable):
+class Firewall(config_table.ConfigTable):
   """Generate windows firewall elements in a sphinx document.
 
   conf.py options:
-    ms_firewall_separator: Unicode separator to use for GUI menuselection.
+    ct_firewall_separator: Unicode separator to use for GUI menuselection.
         This uses the Unicode Character Name resolve a glyph.
         Default: '\N{TRIANGULAR BULLET}'.
         Suggestions: http://xahlee.info/comp/unicode_arrows.html
-        Setting this over-rides ms_separator value for firewall display.
-    ms_firewall_separator_replace: String separator to replace with Unicode
+        Setting this over-rides ct_separator value for firewall display.
+    ct_firewall_separator_replace: String separator to replace with Unicode
         separator. Default: '-->'.
-    ms_firewall_admin: String 'requires admin' modifier for GUI menuselection.
+    ct_firewall_admin: String 'requires admin' modifier for GUI menuselection.
         Default: ' (as admin)'.
-    ms_firewall_content: String default GUI menuselection for opening group
+    ct_firewall_content: String default GUI menuselection for opening group
         policy. Default: 'start --> gpedit.msc'.
-    ms_firewall_key_gui: Boolean True to enable GUI menuselection display of
+    ct_firewall_key_gui: Boolean True to enable GUI menuselection display of
         firewall key. Default: True.
 
   Directive Options:
@@ -119,18 +119,18 @@ class Firewall(ms_table.MsTable):
     """Initalize base Table class and generate separators."""
     super().__init__(*args, **kwargs)
     self.sep = config.get_sep(
-      self.state.document.settings.env.config.ms_firewall_separator,
-      self.state.document.settings.env.config.ms_separator)
+      self.state.document.settings.env.config.ct_firewall_separator,
+      self.state.document.settings.env.config.ct_separator)
     self.rep = config.get_rep(
-      self.state.document.settings.env.config.ms_firewall_separator_replace,
-      self.state.document.settings.env.config.ms_separator_replace)
+      self.state.document.settings.env.config.ct_firewall_separator_replace,
+      self.state.document.settings.env.config.ct_separator_replace)
 
     self.text_content = (
-        self.state.document.settings.env.config.ms_firewall_content)
-    self.key_gui = self.state.document.settings.env.config.ms_firewall_key_gui
+        self.state.document.settings.env.config.ct_firewall_content)
+    self.key_gui = self.state.document.settings.env.config.ct_firewall_key_gui
 
     if 'admin' in self.options:
-      self.key_mod = self.state.document.settings.env.config.ms_firewall_admin
+      self.key_mod = self.state.document.settings.env.config.ct_firewall_admin
     else:
       self.key_mod = ''
 
@@ -159,10 +159,10 @@ class Firewall(ms_table.MsTable):
 
 
 def setup(app):
-  app.add_config_value('ms_firewall_admin', ' (as admin)', '')
-  app.add_config_value('ms_firewall_content', 'start --> control panel --> system and security --> windows firewall', '')
-  app.add_config_value('ms_firewall_key_gui', True, '')
-  app.add_config_value('ms_firewall_separator', config.DEFAULT_SEPARATOR, '')
-  app.add_config_value('ms_firewall_separator_replace', config.DEFAULT_REPLACE, '')
+  app.add_config_value('ct_firewall_admin', ' (as admin)', '')
+  app.add_config_value('ct_firewall_content', 'start --> control panel --> system and security --> windows firewall', '')
+  app.add_config_value('ct_firewall_key_gui', True, '')
+  app.add_config_value('ct_firewall_separator', config.DEFAULT_SEPARATOR, '')
+  app.add_config_value('ct_firewall_separator_replace', config.DEFAULT_REPLACE, '')
 
   app.add_directive('firewall', Firewall)
