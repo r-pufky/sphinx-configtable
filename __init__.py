@@ -6,24 +6,30 @@ import re
 from . import cmdmenu
 from . import config
 
-from .windows import firewall
-from .windows import gpolicy
-from .windows import regedit
-from .windows import service
-from .windows import tmanager
-from .windows import tschedule
+from .windows import wfirewall
+from .windows import wgpolicy
+from .windows import wregedit
+from .windows import wservice
+from .windows import wtmanager
+from .windows import wtschedule
+
+from .ubnt import uctree
+from .ubnt import ufirewall
 
 def setup(app):
   app.add_config_value('ct_separator', config.DEFAULT_SEPARATOR, '')
   app.add_config_value('ct_separator_replace', config.DEFAULT_REPLACE, '')
   cmdmenu.setup(app)
 
-  firewall.setup(app)
-  gpolicy.setup(app)
-  regedit.setup(app)
-  service.setup(app)
-  tmanager.setup(app)
-  tschedule.setup(app)
+  wfirewall.setup(app)
+  wgpolicy.setup(app)
+  wregedit.setup(app)
+  wservice.setup(app)
+  wtmanager.setup(app)
+  wtschedule.setup(app)
+
+  uctree.setup(app)
+  ufirewall.setup(app)
 
   return {
     'version': '0.1',

@@ -1,7 +1,11 @@
-# .. wfirewall:: Disable windows Defender Service
-#   :key: Computer Configuration --> Administrative Templates
-#   :names: Turn off Windows Defender
-#   :data: Enabled
+# .. ufirewall:: Define RFC1918 Private Address Space.
+#   :key:   firewall/nat groups --> add group
+#   :names: Name,
+#           Description,
+#           Type
+#   :data:  RFC1918,
+#           Private IPv4 address space,
+#           ☑ Network Group
 #
 #    .. note::
 #       This is a free-form RST processed content for any additional
@@ -9,20 +13,27 @@
 #
 #       Metadata can be split over multiple lines.
 #
-# A policy section can be setup to show multiple wfirewall tables without
+# A firewall section can be setup to show multiple firewall tables without
 # additional data if multiple values are changed.
 #
-# .. wfirewall:: Disable windows Defender Service
-#   :key: Computer Configuration --> Administrative Templates
-#   :names: Turn off Windows Defender
-#   :data: Enabled
+# .. ufirewall:: Define RFC1918 Private Address Space.
+#   :key:   firewall/nat groups --> add group
+#   :names: Name,
+#           Description,
+#           Type
+#   :data:  RFC1918,
+#           Private IPv4 address space,
+#           ☑ Network Group
 #
-# .. wfirewall:: Disable windows Defender Service Real-time
-#   :key: Computer Configuration --> Windows Components
-#   :names: Turn off real-time protection
-#   :data: Enabled
+# .. ufirewall:: Define RFC1918 Private Address Space.
+#   :key:   firewall/nat groups --> add group
+#   :names: Name,
+#           Description,
+#           Type
+#   :data:  RFC1918,
+#           Private IPv4 address space,
+#           ☑ Network Group
 #   :no_section:
-#   :hide_gui:
 
 from .. import config
 from .. import config_table
@@ -30,41 +41,42 @@ from docutils import nodes
 from docutils.parsers.rst import directives
 from docutils.parsers.rst.directives.tables import Table
 
-class WFirewallData(config_table.ConfigTableData):
-  """Structure to hold wfirewall data and provide convience methods."""
-  LENGTH_MISMATCH = ('Mis-matched sets of wfirewall key data: names and '
+
+class UFirewallData(config_table.ConfigTableData):
+  """Structure to hold firewall data and provide convience methods."""
+  LENGTH_MISMATCH = ('Mis-matched sets of firewall key data: names and '
                      'data must all contain same number of elements.')
 
 
-class WFirewall(config_table.ConfigTable):
-  """Generate windows wfirewall elements in a sphinx document.
+class UFirewall(config_table.ConfigTable):
+  """Generate UBNT firewall elements in a sphinx document.
 
   conf.py options:
-    ct_wfirewall_separator: Unicode separator to use for GUI menuselection.
+    ct_ufirewall_separator: Unicode separator to use for GUI menuselection.
         This uses the Unicode Character Name resolve a glyph.
         Default: '\N{TRIANGULAR BULLET}'.
         Suggestions: http://xahlee.info/comp/unicode_arrows.html
         Setting this over-rides ct_separator value for firewall display.
-    ct_wfirewall_separator_replace: String separator to replace with Unicode
+    ct_ufirewall_separator_replace: String separator to replace with Unicode
         separator. Default: '-->'.
-    ct_wfirewall_admin: String 'requires admin' modifier for GUI menuselection.
+    ct_ufirewall_admin: String 'requires admin' modifier for GUI menuselection.
         Default: ' (as admin)'.
-    ct_wfirewall_content: String default GUI menuselection for opening group
-        policy. Default: 'start --> gpedit.msc'.
-    ct_wfirewall_key_gui: Boolean True to enable GUI menuselection display of
+    ct_ufirewall_content: String default GUI menuselection for opening group
+        policy. Default: 'firewall/nat'.
+    ct_ufirewall_key_gui: Boolean True to enable GUI menuselection display of
         firewall key. Default: True.
 
   Directive Options:
     key: String main firewall key to modify. Required.
-        e.g. Advanced Settings --> Inbound Rules.
+        e.g. service --> dhcp-server.
     names: String or List of firewall names. Required.
-        e.g. Remote Desktop - Shadow (TCP-in).
+        e.g. Enable.
     data: String or List of subkey data. Required.
-        e.g. Block.
+        e.g. true.
     admin: Flag enable admin requirement display in GUI menuselection.
-    no_section: Flag disable the creation of section using the wfirewall
-        arguments, instead of a 'wfirewall docutils container' block.
-    show_title: Flag show wfirewall table caption (caption is arguments
+    no_section: Flag disable the creation of section using the firewall
+        arguments, instead of a 'ctree docutils container' block.
+    show_title: Flag show firewall table caption (caption is arguments
         title).
     hide_gui: Flag hide GUI menuselection. This also disables :admin:.
   """
@@ -88,38 +100,38 @@ class WFirewall(config_table.ConfigTable):
     """Initalize base Table class and generate separators."""
     super().__init__(*args, **kwargs)
     self.sep = config.get_sep(
-      self.state.document.settings.env.config.ct_wfirewall_separator,
+      self.state.document.settings.env.config.ct_ufirewall_separator,
       self.state.document.settings.env.config.ct_separator)
     self.rep = config.get_rep(
-      self.state.document.settings.env.config.ct_wfirewall_separator_replace,
+      self.state.document.settings.env.config.ct_ufirewall_separator_replace,
       self.state.document.settings.env.config.ct_separator_replace)
 
     self.text_content = (
-        self.state.document.settings.env.config.ct_wfirewall_content)
-    self.key_gui = self.state.document.settings.env.config.ct_wfirewall_key_gui
+        self.state.document.settings.env.config.ct_ufirewall_content)
+    self.key_gui = self.state.document.settings.env.config.ct_ufirewall_key_gui
 
     if 'admin' in self.options:
-      self.key_mod = self.state.document.settings.env.config.ct_wfirewall_admin
+      self.key_mod = self.state.document.settings.env.config.ct_ufirewall_admin
     else:
       self.key_mod = ''
 
   def _sanitize_options(self):
     """Sanitize directive user input data.
 
-    * Strips whitespace from wfirewall component key.
+    * Strips whitespace from firewall component key.
     * Converts names, data to python lists with whitespace stripped;
       ensures that the lists are of the same length.
     * Parses directive arguments for title.
 
     Returns:
-      WFirewallData object containing sanitized directive data.
+      UFirewallData object containing sanitized directive data.
     """
     key = ''.join([x.strip() for x in self.options['key'].split('\n')])
     names_list = [x.strip() for x in self.options['names'].split(',')]
     data_list = [x.strip() for x in self.options['data'].split(',')]
     title, _ = self.make_title()
 
-    return WFirewallData(key,
+    return UFirewallData(key,
                          [names_list, data_list],
                          title,
                          cols=2,
@@ -128,10 +140,10 @@ class WFirewall(config_table.ConfigTable):
 
 
 def setup(app):
-  app.add_config_value('ct_wfirewall_admin', ' (as admin)', '')
-  app.add_config_value('ct_wfirewall_content', 'start --> control panel --> system and security --> windows firewall', '')
-  app.add_config_value('ct_wfirewall_key_gui', True, '')
-  app.add_config_value('ct_wfirewall_separator', config.DEFAULT_SEPARATOR, '')
-  app.add_config_value('ct_wfirewall_separator_replace', config.DEFAULT_REPLACE, '')
+  app.add_config_value('ct_ufirewall_admin', ' (as admin)', '')
+  app.add_config_value('ct_ufirewall_content', 'firewall/nat', '')
+  app.add_config_value('ct_ufirewall_key_gui', True, '')
+  app.add_config_value('ct_ufirewall_separator', config.DEFAULT_SEPARATOR, '')
+  app.add_config_value('ct_ufirewall_separator_replace', config.DEFAULT_REPLACE, '')
 
-  app.add_directive('wfirewall', WFirewall)
+  app.add_directive('ufirewall', UFirewall)

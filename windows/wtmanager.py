@@ -1,4 +1,4 @@
-# .. tmanager:: disable windows defender notification icon manager
+# .. wtmanager:: disable windows defender notification icon manager
 #   :key: more details --> startup
 #   :names: Windows Defender notification icon
 #   :data: Disabled
@@ -10,48 +10,15 @@
 #
 #       Metadata can be split over multiple lines.
 #
-#    See TaskManager class docstring for additional options.
-#
-#    conf.py options:
-#      ct_tmanager_separator: Unicode separator to use for GUI menuselection.
-#          This uses the Unicode Character Name resolve a glyph.
-#          Default: '\N{TRIANGULAR BULLET}'.
-#          Suggestions: http://xahlee.info/comp/unicode_arrows.html
-#          Setting this over-rides ct_separator value for task manager
-#          display.
-#      ct_tmanager_separator_replace: String separator to replace with Unicode
-#          separator. Default: '-->'.
-#      ct_tmanager_admin: String 'requires admin' modifier for GUI
-#          menuselection. Default: ' (as admin)'.
-#      ct_tmanager_content: String default GUI menuselection for opening group
-#          policy.
-#          Default: 'start --> Task Scheduler --> Task Scheduler Library'.
-#      ct_tmanager_key_gui: Boolean True to enable GUI menuselection display of
-#          task manager key. Default: True.
-#
-#    Directive Options:
-#      key: String main task manager key to modify. Required.
-#          e.g. Local Computer Policy --> Administrative Templates.
-#      names: String or List of task manager names. Required.
-#          e.g. Allow only system backup.
-#      data: String or List of subkey data. Required.
-#          e.g. Disabled.
-#      admin: Flag enable admin requirement display in GUI menuselection.
-#      no_section: Flag disable the creation of section using the task manager
-#          arguments, instead of a 'tmanager docutils container' block.
-#      show_title: Flag show task manager table caption (caption is arguments
-#          title).
-#      hide_gui: Flag hide GUI menuselection. This also disables :admin:.
-#
 # A task manager section can be setup to show multiple policy tables without
 # additional data if multiple values are changed.
 #
-# .. tmanager:: disable windows defender notification icon manager
+# .. wtmanager:: disable windows defender notification icon manager
 #   :key: more details --> startup
 #   :names: Windows Defender notification icon
 #   :data: Disabled
 #
-# .. tmanager:: disable windows defender notification icon manager
+# .. wtmanager:: disable windows defender notification icon manager
 #   :key: more details --> startup
 #   :names: Windows Defender notification icon
 #   :data: Disabled
@@ -65,28 +32,28 @@ from docutils.parsers.rst import directives
 from docutils.parsers.rst.directives.tables import Table
 
 
-class TaskManagerData(config_table.ConfigTableData):
+class WTaskManagerData(config_table.ConfigTableData):
   """Structure to hold task manager data and provide convience methods."""
   LENGTH_MISMATCH = ('Mis-matched sets of task manager key data: names and '
                      'data must all contain same number of elements.')
 
 
-class TaskManager(config_table.ConfigTable):
+class WTaskManager(config_table.ConfigTable):
   """Generate task manager elements in a sphinx document.
 
   conf.py options:
-    ct_tmanager_separator: Unicode separator to use for GUI menuselection.
+    ct_wtmanager_separator: Unicode separator to use for GUI menuselection.
         This uses the Unicode Character Name resolve a glyph.
         Default: '\N{TRIANGULAR BULLET}'.
         Suggestions: http://xahlee.info/comp/unicode_arrows.html
         Setting this over-rides ct_separator value for task manager display.
-    ct_tmanager_separator_replace: String separator to replace with Unicode
+    ct_wtmanager_separator_replace: String separator to replace with Unicode
         separator. Default: '-->'.
-    ct_tmanager_admin: String 'requires admin' modifier for GUI menuselection.
+    ct_wtmanager_admin: String 'requires admin' modifier for GUI menuselection.
         Default: ' (as admin)'.
-    ct_tmanager_content: String default GUI menuselection for opening group
+    ct_wtmanager_content: String default GUI menuselection for opening group
         policy. Default: 'start --> Task Scheduler --> Task Scheduler Library'.
-    ct_tmanager_key_gui: Boolean True to enable GUI menuselection display of
+    ct_wtmanager_key_gui: Boolean True to enable GUI menuselection display of
         task manager key. Default: True.
 
   Directive Options:
@@ -98,7 +65,7 @@ class TaskManager(config_table.ConfigTable):
         e.g. Disabled.
     admin: Flag enable admin requirement display in GUI menuselection.
     no_section: Flag disable the creation of section using the task manager
-        arguments, instead of a 'tmanager docutils container' block.
+        arguments, instead of a 'wtmanager docutils container' block.
     show_title: Flag show task manager table caption (caption is arguments
         title).
     hide_gui: Flag hide GUI menuselection. This also disables :admin:.
@@ -123,18 +90,18 @@ class TaskManager(config_table.ConfigTable):
     """Initalize base Table class and generate separators."""
     super().__init__(*args, **kwargs)
     self.sep = config.get_sep(
-      self.state.document.settings.env.config.ct_tmanager_separator,
+      self.state.document.settings.env.config.ct_wtmanager_separator,
       self.state.document.settings.env.config.ct_separator)
     self.rep = config.get_rep(
-      self.state.document.settings.env.config.ct_tmanager_separator_replace,
+      self.state.document.settings.env.config.ct_wtmanager_separator_replace,
       self.state.document.settings.env.config.ct_separator_replace)
 
     self.text_content = (
-        self.state.document.settings.env.config.ct_tmanager_content)
-    self.key_gui = self.state.document.settings.env.config.ct_tmanager_key_gui
+        self.state.document.settings.env.config.ct_wtmanager_content)
+    self.key_gui = self.state.document.settings.env.config.ct_wtmanager_key_gui
 
     if 'admin' in self.options:
-      self.key_mod = self.state.document.settings.env.config.ct_tmanager_admin
+      self.key_mod = self.state.document.settings.env.config.ct_wtmanager_admin
     else:
       self.key_mod = ''
 
@@ -147,26 +114,26 @@ class TaskManager(config_table.ConfigTable):
     * Parses directive arguments for title.
 
     Returns:
-      TaskManagerData object containing sanitized directive data.
+      WTaskManagerData object containing sanitized directive data.
     """
     key = ''.join([x.strip() for x in self.options['key'].split('\n')])
     names_list = [x.strip() for x in self.options['names'].split(',')]
     data_list = [x.strip() for x in self.options['data'].split(',')]
     title, _ = self.make_title()
 
-    return TaskManagerData(key,
-                           [names_list, data_list],
-                           title,
-                           cols=2,
-                           gui=self.key_gui,
-                           key_mod=self.key_mod)
+    return WTaskManagerData(key,
+                            [names_list, data_list],
+                            title,
+                            cols=2,
+                            gui=self.key_gui,
+                            key_mod=self.key_mod)
 
 
 def setup(app):
-  app.add_config_value('ct_tmanager_admin', ' (as admin)', '')
-  app.add_config_value('ct_tmanager_content', 'start --> task manager', '')
-  app.add_config_value('ct_tmanager_key_gui', True, '')
-  app.add_config_value('ct_tmanager_separator', config.DEFAULT_SEPARATOR, '')
-  app.add_config_value('ct_tmanager_separator_replace', config.DEFAULT_REPLACE, '')
+  app.add_config_value('ct_wtmanager_admin', ' (as admin)', '')
+  app.add_config_value('ct_wtmanager_content', 'start --> task manager', '')
+  app.add_config_value('ct_wtmanager_key_gui', True, '')
+  app.add_config_value('ct_wtmanager_separator', config.DEFAULT_SEPARATOR, '')
+  app.add_config_value('ct_wtmanager_separator_replace', config.DEFAULT_REPLACE, '')
 
-  app.add_directive('tmanager', TaskManager)
+  app.add_directive('wtmanager', WTaskManager)
