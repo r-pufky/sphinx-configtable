@@ -15,6 +15,7 @@ from .windows import wtschedule
 
 from .ubnt import uctree
 from .ubnt import ufirewall
+from .ubnt import ucontroller
 
 def setup(app):
   app.add_config_value('ct_separator', config.DEFAULT_SEPARATOR, '')
@@ -30,6 +31,7 @@ def setup(app):
 
   uctree.setup(app)
   ufirewall.setup(app)
+  ucontroller.setup(app)
 
   return {
     'version': '0.1',
