@@ -10,6 +10,7 @@ from .windows import wfirewall
 from .windows import wgpolicy
 from .windows import wregedit
 from .windows import wservice
+from .windows import wsysprop
 from .windows import wtmanager
 from .windows import wtschedule
 
@@ -26,6 +27,7 @@ def setup(app):
   wgpolicy.setup(app)
   wregedit.setup(app)
   wservice.setup(app)
+  wsysprop.setup(app)
   wtmanager.setup(app)
   wtschedule.setup(app)
 
