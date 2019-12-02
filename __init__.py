@@ -8,6 +8,7 @@ from . import config
 
 from .generic import gui
 from .generic import flocation
+from .generic import port
 
 from .windows import wfirewall
 from .windows import wgpolicy
@@ -28,6 +29,7 @@ def setup(app):
 
   gui.setup(app)
   flocation.setup(app)
+  port.setup(app)
 
   wfirewall.setup(app)
   wgpolicy.setup(app)
