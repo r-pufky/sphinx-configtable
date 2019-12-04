@@ -95,10 +95,10 @@ class GPort(config_table.ConfigTable):
     Returns:
       FileLocationData object containing sanitized directive data.
     """
-    port_list = [x.strip() for x in self.options['port'].split(',')]
-    protocol_list = [x.strip() for x in self.options['protocol'].split(',')]
-    type_list = [x.strip() for x in self.options['type'].split(',')]
-    purpose_list = [x.strip() for x in self.options['purpose'].split(',')]
+    port_list = self._parse_list('port')
+    protocol_list = self._parse_list('protocol')
+    type_list = self._parse_list('type')
+    purpose_list = self._parse_list('purpose')
 
     if 'header' in self.options:
       port_list.insert(0, 'Port')

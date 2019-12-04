@@ -17,7 +17,7 @@ class GFileLocation(config_table.ConfigTable):
   Directives:
     See ConfigTable for core Directives.
 
-    :header: Flag to render headers in the port table, below key_title.
+    :header: Flag to render headers in the file location table, below key_title.
 
   .. gflocation:: Import File Locations
     :key_title: Linux File Locations
@@ -92,9 +92,9 @@ class GFileLocation(config_table.ConfigTable):
     Returns:
       FileLocationData object containing sanitized directive data.
     """
-    key_title = ''.join([x.strip() for x in self.options['key_title'].split('\n')])
-    files_list = [x.strip() for x in self.options['files'].split(',')]
-    purpose_list = [x.strip() for x in self.options['purpose'].split(',')]
+    key_title = ''.join(self._parse_list('key_title','\n'))
+    files_list = self._parse_list('files')
+    purpose_list = self._parse_list('purpose')
 
     if 'header' in self.options:
       files_list.insert(0, 'Location')
