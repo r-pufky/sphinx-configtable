@@ -25,6 +25,7 @@ ct_separator_replace: String default separator to be replace with Unicode
 ```
 
 ## Modules
+
 | `cmdmenu` | Replacement for `guilabel` using global separators. |
 | `generic` | Generic modules.                                    |
 | `windows` | Windows specific modules.                           |
