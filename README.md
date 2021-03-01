@@ -6,15 +6,18 @@ Import extension as a normal sphinx extension.
 
 sphinx/conf.py
 ```python
-extensions = ['sphinx-configtable']
+extensions = ['sphinx_panels', 'sphinx-configtable']
 ```
+
+``sphinx_panels`` is required for proper operation.
 
 ## Configuration
 See each module for specific usage instructions.
 
-A global default may be set for separators and formatting and will be used if a per-module setting is not set.
+A global default may be set for separators and formatting and will be used if a
+per-module setting is not set.
 
-See `config_table.py` for global defaults.
+See `ct.py` for global defaults.
 
 sphinx/conf.py
 ```python
@@ -29,6 +32,8 @@ ct_separator_replace: String default separator to be replace with Unicode
 | Module    | Description                                         |
 |-----------|-----------------------------------------------------|
 | `cmdmenu` | Replacement for `guilabel` using global separators. |
-| `generic` | Generic modules.                                    |
-| `windows` | Windows specific modules.                           |
-| `ubnt`    | Ubiquity specific modules.                          |
+| `files`   | File listings.                                      |
+| `gpo`     | GPO configuration.                                  |
+| `gui`     | GUI navigation and configuration.                   |
+| `ports`   | Ports descriptions.                                 |
+| `regedit` | Registry configuration.                             | 
