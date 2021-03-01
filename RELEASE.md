@@ -1,5 +1,13 @@
 # [Changelog][3g]
 
+## 2021-02-28.0
+Using sphinx panels for config tables.
+
+Changed:
+* Tables now use sphinx_panels for rendering.
+* Tables consolidated to generic functions.
+* Custom tables limited to well-defined roles.
+
 ## 2019-12-17.0
 Initial Release.
 
