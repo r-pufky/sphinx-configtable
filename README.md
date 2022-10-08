@@ -21,10 +21,10 @@ See `ct.py` for global defaults.
 
 sphinx/conf.py
 ```python
-ct_separator: Unicode default separator to render for all ms extensions.
+ct_separator: Unicode default separator to render for all separator replaces.
     Default: '\N{TRIANGULAR BULLET}'
 ct_separator_replace: String default separator to be replace with Unicode
-    separator for all ms extensions. Default: '-->'
+    separator. Default: '-->'.
 ```
 
 ## Modules

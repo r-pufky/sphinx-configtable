@@ -51,12 +51,14 @@ badges = {
   '{COUNTRY}': Template.info % 'COUNTRY',
 
   # Descriptors / Actions
+  '{ADD}': Template.success % 'ADD',
   '{DELETE}': Template.danger % 'DELETE',
   '{DESCRIPTION}': Template.info % 'DESCRIPTION',
   '{OPTIONAL}': Template.info % 'OPTIONAL',
   '{DRIVE}': Template.info % 'DRIVE',
-  '{LMB}': Template.info % 'LMB',
-  '{RMB}': Template.info % 'RMB',
+  '{LMB}': Template.info % '🖯',
+  '{MMB}': Template.info % '🖰',
+  '{RMB}': Template.info % '🖱',
 
   # Services
   '{STARTED}': Template.success % 'STARTED',
@@ -106,6 +108,8 @@ badges = {
   '{SSH_PORT}': Template.info % 'SSH PORT',
   '{STATIC}': Template.info % 'STATIC',
   '{DHCP}': Template.info % 'DHCP',
+  '{HTTPS}': Template.info % 'HTTPS',
+  '{HTTP}': Template.info % 'HTTP',
 
   # Networking / DNS
   '{HOST}': Template.info % 'HOST',
